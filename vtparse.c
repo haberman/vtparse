@@ -108,7 +108,7 @@ static void do_state_change(vtparse_t *parser, state_change_t change, char ch)
         /* Perform up to three actions:
          *   1. the exit action of the old state
          *   2. the action associated with the transition
-         *   3. the entry actionk of the new action
+         *   3. the entry action of the new state
          */
 
         vtparse_action_t exit_action = EXIT_ACTIONS[parser->state];
