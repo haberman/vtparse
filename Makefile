@@ -13,7 +13,7 @@ vtparse_table.h: $(RUBY_GENERATION_FILES)
 	ruby vtparse_gen_c_tables.rb
 
 test: vtparse.c vtparse.h vtparse_table.c vtparse_table.h vtparse_test.c
-	gcc -o test vtparse_test.c vtparse.c vtparse_table.c
+	gcc -Wall -o test vtparse_test.c vtparse.c vtparse_table.c
 
 libvtparse.a: vtparse.o vtparse_table.o
 	rm -f $@
@@ -21,7 +21,7 @@ libvtparse.a: vtparse.o vtparse_table.o
 	ranlib $@
 
 .c.o:
-	gcc -o $@ -c $<  -O3
+	gcc -O3 -Wall -o $@ -c $<
 
 
 .PHONY: all clean
