@@ -1,0 +1,67 @@
+
+VTParse - an implementation of Paul Williams' DEC compatible state machine parser
+          <http://www.vt100.net/emu/dec_ansi_parser>
+
+Author: Joshua Haberman <joshua@reverberate.org>
+
+This code is in the public domain.
+
+BUILDING
+========
+
+Ruby is required at build time to generate the tables in C.  To build the library
+and test program, just type make:
+
+$ make
+ruby vtparse_gen_c_tables.rb
+Wrote vtparse_table.h
+Wrote vtparse_table.c
+gcc -o test vtparse_test.c vtparse.c vtparse_table.c
+
+TEST PROGRAM
+============
+
+The test program shows how to use vtparse.  To see what kind of data is returned
+by the library, try:
+
+--------------------------------
+
+$ vim > terminaloutput
+<type ':q<ENTER>' to exit vim, even though you won't see it>
+$ ./test < terminaloutput  | head -14
+Received action ESC_DISPATCH, char=0x37
+Intermediate chars: ''
+0 Parameters:
+
+Received action CSI_DISPATCH, char=0x68
+Intermediate chars: '???'
+1 Parameters:
+        47
+
+Received action CSI_DISPATCH, char=0x68
+Intermediate chars: '???'
+1 Parameters:
+        1
+
+---------------------------------
+
+VERIFYING
+=========
+
+You can also verify the validity of the state tables by running:
+
+$ ruby vtparse_check_tables.rb
+Tables had all necessary transitions defined.
+
+This checks to make sure that state transitions are defined for all states, for all
+characters 0-0xA0.
+
+
+TODO
+====
+
+One possible enhancement is to allow the client to pass a return value from the
+callback to say "stop parsing."  The vtparse() function could return the number
+of bytes consumed from the input buffer.  This would be quite simple to do if
+someone needed this functionality, but I don't, so I didn't bother.
+
