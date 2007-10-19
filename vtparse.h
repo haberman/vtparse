@@ -6,6 +6,13 @@
  * This code is in the public domain.
  */
 
+#ifndef VTPARSE_DOT_H
+#define VTPARSE_DOT_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "vtparse_table.h"
 
 #define MAX_INTERMEDIATE_CHARS 2
@@ -30,3 +37,8 @@ typedef struct vtparse {
 void vtparse_init(vtparse_t *parser, vtparse_callback_t cb);
 void vtparse(vtparse_t *parser, unsigned char *data, int len);
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif
