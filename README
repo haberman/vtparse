@@ -13,10 +13,11 @@ Ruby is required at build time to generate the tables in C.  To build the librar
 and test program, just type make:
 
 $ make
-ruby vtparse_gen_c_tables.rb
-Wrote vtparse_table.h
-Wrote vtparse_table.c
-gcc -o test vtparse_test.c vtparse.c vtparse_table.c
+<this will create the test program and libvtparse.a>
+
+I have only tested the build on Mac OS X and Linux, but it should build anywhere
+Ruby and GCC are available.  Other C compilers should work as well, I just haven't
+tried them.
 
 TEST PROGRAM
 ============
@@ -28,18 +29,21 @@ by the library, try:
 
 $ vim > terminaloutput
 <type ':q<ENTER>' to exit vim, even though you won't see it>
-$ ./test < terminaloutput  | head -14
-Received action ESC_DISPATCH, char=0x37
-Intermediate chars: ''
-0 Parameters:
+$ ./test < terminaloutput  | head -16
+Received action ESC_DISPATCH
+Char: 0x37 ('7')
 
-Received action CSI_DISPATCH, char=0x68
-Intermediate chars: '???'
+Received action CSI_DISPATCH
+Char: 0x68 ('h')
+1 Intermediate chars:
+  0x3f ('?')
 1 Parameters:
         47
 
-Received action CSI_DISPATCH, char=0x68
-Intermediate chars: '???'
+Received action CSI_DISPATCH
+Char: 0x68 ('h')
+1 Intermediate chars:
+  0x3f ('?')
 1 Parameters:
         1
 
