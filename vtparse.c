@@ -6,19 +6,15 @@
  * This code is in the public domain.
  */
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "vtparse.h"
 
 void vtparse_init(vtparse_t *parser, vtparse_callback_t cb)
 {
-    parser->state                 = VTPARSE_STATE_GROUND;
-    parser->intermediate_chars[0] = '\0';
-    parser->num_params            = 0;
-    parser->ignore_flagged        = 0;
-    parser->cb                    = cb;
+    parser->state                  = VTPARSE_STATE_GROUND;
+    parser->num_intermediate_chars = 0;
+    parser->num_params             = 0;
+    parser->ignore_flagged         = 0;
+    parser->cb                     = cb;
 }
 
 static void do_action(vtparse_t *parser, vtparse_action_t action, char ch)
@@ -47,12 +43,10 @@ static void do_action(vtparse_t *parser, vtparse_action_t action, char ch)
         case VTPARSE_ACTION_COLLECT:
         {
             /* Append the character to the intermediate params */
-            int num_intermediate_chars = strlen((char*)parser->intermediate_chars);
-
-            if(num_intermediate_chars + 1 > MAX_INTERMEDIATE_CHARS)
+            if(parser->num_intermediate_chars + 1 > MAX_INTERMEDIATE_CHARS)
                 parser->ignore_flagged = 1;
             else
-                parser->intermediate_chars[num_intermediate_chars++] = ch;
+                parser->intermediate_chars[parser->num_intermediate_chars++] = ch;
 
             break;
         }
@@ -85,13 +79,13 @@ static void do_action(vtparse_t *parser, vtparse_action_t action, char ch)
         }
 
         case VTPARSE_ACTION_CLEAR:
-            parser->intermediate_chars[0] = '\0';
+            parser->num_intermediate_chars = 0;
             parser->num_params            = 0;
             parser->ignore_flagged        = 0;
             break;
 
         default:
-            fprintf(stderr, "Internal error, unknown action %d", action);
+            parser->cb(parser, VTPARSE_ACTION_ERROR, 0);
     }
 }
 

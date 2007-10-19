@@ -213,7 +213,7 @@ $states.each { |state, transitions|
 
 # establish an ordering to the states and actions
 
-$actions_in_order = action_names.keys.sort { |a1, a2| a1.to_s <=> a2.to_s }
+$actions_in_order = action_names.keys.sort { |a1, a2| a1.to_s <=> a2.to_s } + [:error]
 $states_in_order = $states.keys.sort       { |s1, s2| s1.to_s <=> s2.to_s }
 
 #
