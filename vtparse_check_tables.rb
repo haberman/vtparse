@@ -8,13 +8,9 @@ require 'vtparse_tables'
 
 table = {}
 
-anywhere_array = expand_ranges($states[:ANYWHERE])
-
 $state_tables.each { |state, table|
-    next if state == :ANYWHERE
-
     table.each_with_index { |val, i|
-        if not (val or $state_tables[:ANYWHERE][i])
+        if not val
             raise "No transition defined from state #{state}, char 0x#{i.to_s(16)}!"
         end
     }

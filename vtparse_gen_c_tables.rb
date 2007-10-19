@@ -10,7 +10,7 @@ end
 File.open("vtparse_table.h", "w") { |f|
     f.puts "typedef enum {"
     $states_in_order.each_with_index { |state, i|
-        f.puts "   VTPARSE_STATE_#{state.to_s.upcase} = #{i},"
+        f.puts "   VTPARSE_STATE_#{state.to_s.upcase} = #{i+1},"
     }
     f.puts "} vtparse_state_t;"
     f.puts
@@ -25,7 +25,7 @@ File.open("vtparse_table.h", "w") { |f|
     f.puts "extern vtparse_action_t ENTRY_ACTIONS[#{$states_in_order.length}];"
     f.puts "extern vtparse_action_t EXIT_ACTIONS[#{$states_in_order.length}];"
     f.puts "extern char *ACTION_NAMES[#{$actions_in_order.length+1}];"
-    f.puts "extern char *STATE_NAMES[#{$states_in_order.length}];"
+    f.puts "extern char *STATE_NAMES[#{$states_in_order.length+1}];"
     f.puts
 }
 
@@ -43,14 +43,15 @@ File.open("vtparse_table.c", "w") { |f|
     f.puts "};"
     f.puts
     f.puts "char *STATE_NAMES[] = {"
+    f.puts "   \"<no state>\","
     $states_in_order.each { |state|
         f.puts "   \"#{state.to_s}\","
     }
     f.puts "};"
     f.puts
     f.puts "state_change_t STATE_TABLE[#{$states_in_order.length}][256] = {"
-    $states_in_order.each { |state|
-        f.puts "  {  /* VTPARSE_STATE_#{state.to_s.upcase} */"
+    $states_in_order.each_with_index { |state, i|
+        f.puts "  {  /* VTPARSE_STATE_#{state.to_s.upcase} = #{i} */"
         $state_tables[state].each_with_index { |state_change, i|
             if not state_change
                 f.puts "    0,"
