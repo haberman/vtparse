@@ -69,3 +69,12 @@ callback to say "stop parsing."  The vtparse() function could return the number
 of bytes consumed from the input buffer.  This would be quite simple to do if
 someone needed this functionality, but I don't, so I didn't bother.
 
+Currently there is no explicit character set support.  I don't know enough about
+the relevant standards to know if vtparse should have character set support, or
+what that support would look like.  Suggestions along this vein are very welcome!
+
+CREDITS
+=======
+
+Thanks to Julian Scheid for several bugfixes and enhancements.
+
