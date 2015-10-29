@@ -21,7 +21,7 @@ extern "C" {
 
 struct vtparse;
 
-typedef void (*vtparse_callback_t)(struct vtparse*, vtparse_action_t, unsigned char);
+typedef void (*vtparse_callback_t)(struct vtparse*, vtparse_action_t, unsigned int);
 
 typedef struct vtparse {
     vtparse_state_t    state;
@@ -32,10 +32,12 @@ typedef struct vtparse {
     int                params[16];
     int                num_params;
     void*              user_data;
+    int                characterBytes;
+    unsigned int       utf8Character;
 } vtparse_t;
 
 void vtparse_init(vtparse_t *parser, vtparse_callback_t cb);
-void vtparse(vtparse_t *parser, unsigned char *data, int len);
+void vtparse(vtparse_t *parser, unsigned char *data, unsigned int len);
 
 #ifdef __cplusplus
 }
